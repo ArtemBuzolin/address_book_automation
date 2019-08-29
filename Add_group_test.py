@@ -4,13 +4,13 @@ from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoAlertPresentException
 import unittest
-
+from group import Group
 class AppDynamicsJob(unittest.TestCase):
     def setUp(self):
         # AppDynamics will automatically override this web driver
         # as documented in https://docs.appdynamics.com/display/PRO44/Write+Your+First+Script
         self.wd = webdriver.Firefox()
-        self.driver.implicitly_wait(30)
+        self.wd.implicitly_wait(30)
         self.verificationErrors = []
         self.accept_next_alert = True
 
@@ -30,19 +30,19 @@ class AppDynamicsJob(unittest.TestCase):
         # open groups page
         wd.find_element_by_link_text("groups").click()
 
-    def create_group(self, wd, gname, header, footer):
+    def create_group(self, wd, Group):
         # init group creation
         wd.find_element_by_name("new").click()
         # fill group firm
         wd.find_element_by_name("group_name").click()
         wd.find_element_by_name("group_name").clear()
-        wd.find_element_by_name("group_name").send_keys(gname)
+        wd.find_element_by_name("group_name").send_keys(Group.name)
         wd.find_element_by_name("group_header").click()
         wd.find_element_by_name("group_header").clear()
-        wd.find_element_by_name("group_header").send_keys(header)
+        wd.find_element_by_name("group_header").send_keys(Group.header)
         wd.find_element_by_name("group_footer").click()
         wd.find_element_by_name("group_footer").clear()
-        wd.find_element_by_name("group_footer").send_keys(footer)
+        wd.find_element_by_name("group_footer").send_keys(Group.footer)
         # submit group creation
         wd.find_element_by_name("submit").click()
 
@@ -59,7 +59,7 @@ class AppDynamicsJob(unittest.TestCase):
         wd.get("http://localhost/addressbook/")
         self.login(wd, username="Admin", password="secret")
         self.open_group_page(wd)
-        self.create_group(wd, gname="111", header="22222222", footer="222")
+        self.create_group(wd, Group(name="111", header="22222222", footer="222"))
         self.return_to_groups_page(wd)
         self.logout(wd)
 
@@ -68,7 +68,7 @@ class AppDynamicsJob(unittest.TestCase):
         wd.get("http://localhost/addressbook/")
         self.login(wd, username="Admin", password="secret")
         self.open_group_page(wd)
-        self.create_group(wd, gname="", header="", footer="")
+        self.create_group(wd, Group(name="", header="", footer=""))
         self.return_to_groups_page(wd)
         self.logout(wd)
     
