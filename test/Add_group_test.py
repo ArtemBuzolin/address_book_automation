@@ -3,7 +3,7 @@
 from fixture.application import Application # import of help class
 import pytest
 
-from model.group import Group
+from model.group_params import GroupParams
 
 
 @pytest.fixture   # inicialize fixture for pytest
@@ -16,12 +16,12 @@ def app(request):
 def test_add_group(app):
     wd = app.wd
     app.session.login(username="Admin", password="secret")
-    app.create_group(Group(name="111", header="22222222", footer="222"))
+    app.group.create(GroupParams(name="111", header="22222222", footer="222"))
     app.session.logout()
 
 def test_add_empty_group(app):
     app.session.login(username="Admin", password="secret")
-    app.create_group(Group(name="", header="", footer=""))
+    app.group.create(GroupParams(name="", header="", footer=""))
     app.session.logout()
 
     def tearDown(self):
