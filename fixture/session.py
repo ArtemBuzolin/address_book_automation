@@ -1,3 +1,4 @@
+from time import sleep
 class SessionHelper:
 
     def __init__(self, app):
@@ -8,6 +9,7 @@ class SessionHelper:
     def login(self, username, password):
         # login
         wd = self.app.wd
+        sleep(1)
         self.app.open_homepage()
         wd.find_element_by_name("user").click()
         wd.find_element_by_name("user").clear()
@@ -19,4 +21,6 @@ class SessionHelper:
     def logout(self):
         # logout
         wd = self.app.wd
+        sleep(1)
         wd.find_element_by_link_text("Logout").click()
+
