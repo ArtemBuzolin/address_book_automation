@@ -21,13 +21,10 @@ def app(request):
 
 def test_add_group(app):
     wd = app.wd
-    app.session.login(username="Admin", password="secret")
     app.group.create(GroupParams(name="111", header="22222222", footer="222"))
-    app.session.logout()
 
 def test_add_empty_group(app):
-    app.session.login(username="Admin", password="secret")
     app.group.create(GroupParams(name="", header="", footer=""))
-    app.session.logout()
+
 
 
