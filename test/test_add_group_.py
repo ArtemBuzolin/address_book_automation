@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-]
-
+from time import sleep
 
 from model.group_params import GroupParams
 
@@ -20,8 +20,8 @@ def app(request):
 
 
 def test_add_group(app):
-    wd = app.wd
     app.group.create(GroupParams(name="111", header="22222222", footer="222"))
+    app.session.lo gout()
 
 def test_add_empty_group(app):
     app.group.create(GroupParams(name="", header="", footer=""))
