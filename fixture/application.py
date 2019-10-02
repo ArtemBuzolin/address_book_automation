@@ -5,7 +5,7 @@ class Application:
 
     def __init__(self):
         self.wd = webdriver.Chrome()
-        self.wd.implicitly_wait(10)
+        self.wd.implicitly_wait(5)
         self.session = SessionHelper(self) # connection with class from session.py, with parameter self( for using self.wd(webdriver(__init__)) )
         self.group = GroupHelper(self)
 
