@@ -1,4 +1,5 @@
 from time import sleep
+from model.group_params import GroupParams
 class GroupHelper:
 
     def __init__(self, app):
@@ -7,7 +8,8 @@ class GroupHelper:
     def open_group_page(self):
         # open groups page]
         wd = self.app.wd
-        wd.find_element_by_link_text("groups").click()
+        if not (wd.current_url.endswith('/group.php') and len(wd.find_elements_by_name('new')) > 0):
+            wd.find_element_by_link_text("groups").click()
 
 
     def return_to_groups_page(self):
@@ -25,6 +27,7 @@ class GroupHelper:
         # submit group creation
         wd.find_element_by_name("submit").click()
         self.return_to_groups_page()
+        self.group_cache = None
 
     def fill_group_form(self, GroupParams):
         wd = self.app.wd
@@ -45,6 +48,7 @@ class GroupHelper:
         self.select_first_group()
         wd.find_element_by_name('delete').click()
         self.return_to_groups_page()
+        self.group_cache = None
 
     def modify_firstgroup(self, new_group_data):
         wd = self.app.wd
@@ -57,6 +61,7 @@ class GroupHelper:
         #submit
         wd.find_element_by_name('update').click()
         self.return_to_groups_page()
+        self.group_cache = None
 
     def select_first_group(self):
         wd = self.app.wd
@@ -66,6 +71,7 @@ class GroupHelper:
         wd = self.app.wd
         self.open_group_page()
         return len(wd.find_elements_by_name('selected[]'))
+
     def delete_all_groups(self):
         wd = self.app.wd
         self.open_group_page()
@@ -73,7 +79,21 @@ class GroupHelper:
             i.click()
         wd.find_element_by_name('delete').click()
         self.return_to_groups_page()
+        self.group_cache = None
 
+    group_cache = None
+
+    def get_group_list(self):
+        if self.group_cache is None:
+            wd = self.app.wd
+            self.open_group_page()
+            self.group_cache = []
+            for element in wd.find_elements_by_css_selector('span.group'):
+                text = element.text
+                id = element.find_element_by_name('selected[]').get_attribute('value')
+                self.group_cache.append(GroupParams(name = text , id = id))
+
+        return list(self.group_cache)
 
 
 
